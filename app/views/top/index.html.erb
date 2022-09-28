@@ -1,0 +1,107 @@
+<% if session[:user_id] %>
+  <div id="grid" style="width: 100%; height: 250px;"></div>
+
+  <!-- 新規ツイート -->
+  <div style='margin-top:30px;'>
+    <input type="text" id="post_tweet" name="post_tweet_content" required size="20" '>
+    <div id='submit_post_tweet' class='tweet-post-form tweet-post-btn'>ツイートする</div>
+  </div>
+<% end %>
+
+<script>
+ $(function () {
+    listGridView();
+  });
+
+  // グリッドの再表示
+  function listGridView() {
+    $("#grid").w2destroy("grid_name");
+    $('#grid').w2grid({
+      name: 'grid_name', 
+
+      url: {
+        get: '/top/grid_view'
+      },
+      method: 'GET',
+      show: {
+        toolbar: false,
+      },
+      postData: {
+        user_id: $('#hidden_user_id')[0].attributes.value.value,
+      },
+      recid: 'id',
+      columns: [
+        { field: 'tweet_id', caption: 'tweet_id', hidden: true },
+        { field: 'tweet_user', caption: 'ユーザー名', size: '8%' },
+        { field: 'content', caption: '内容', size: '10%' },
+        { field: 'fav_list', caption: 'fav_list', hidden: true },
+        { field: 'tweet_user_id', caption: 'tweet_user_id', hidden: true },
+        { field: 'fav', caption: 'いいね', size: '2%', render: func_fav_view  }
+      ],
+      sortData: [
+        { field: 'id', direction: 'asc' },
+      ],
+    });
+  }
+
+  // いいねの表示
+  func_fav_view = function(record, row_idx, col_idx){
+    if (record.fav_list.split(' ').includes(String(record.tweet_id))){
+        return '<div href="javascript:void(0)"style="text-align: center">' +
+        `<a href="javascript:void(0)" id="fav-icon" value="${record.tweet_id}" style="color:red;">❤` +
+        '</a>' + 
+        '</div>';
+      }else {
+        return '<div style="text-align: center">' +
+        `<a href="javascript:void(0)" id="fav-icon" value="${record.tweet_id}" style="color:gray;">❤` +
+        '</a>' + 
+        '</div>';
+      }
+  };
+
+// いいね機能
+$(document).on('click','#fav-icon',function(e){
+  var userId = $('#hidden_user_id')[0].attributes.value.value;
+  var targetId = $(this)[0].attributes.value.value;
+
+  $.ajax({
+    type: 'POST', // HTTPメソッド
+    url: '/top/add_fav',
+    data: { 
+      userId: userId,
+      targetId: targetId }, // urlに送りたいデータ
+    })
+    .done(function (data) {
+      listGridView()
+    })
+    .fail(function (){
+      alert('通信に失敗しました');
+    })
+});
+
+// 新規ツイート作成
+$(document).on('click','#submit_post_tweet',function(e){
+  var userId = $('#hidden_user_id')[0].attributes.value.value;
+  var tweet_content = $('#post_tweet')[0].value;
+
+  $.ajax({
+    type: 'POST', // HTTPメソッド
+    url: '/top/create',
+    data: { 
+      userId: userId,
+      tweet_content: tweet_content }, // urlに送りたいデータ
+    dataType: 'json'  //データの型, textなどもある
+    })
+    .done(function (data) {
+      // 新規ツイート作成に成功した場合、フォームの情報を空にする
+      $('#post_tweet')[0].value = '';
+      listGridView()
+    })
+    .fail(function (){
+      alert('通信に失敗しました');
+    })
+});
+</script>
+
+    <%= javascript_include_tag 'w2ui' %>
+

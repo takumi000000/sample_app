@@ -1,0 +1,18 @@
+<div class='head-nav'>
+  <h1>Sample App</h1>
+  <% if session[:user_id] %>
+    <div class="login-nav">
+      <div>ログイン中:<%= @users.find(session[:user_id]).user_name %></div>
+      <%= button_to "ログアウト", {controller: 'top', action: 'logout'},{class: "mybutton head-nav"} %>
+      <!-- hidden fieldにログインユーザIDを格納 -->
+      <input id='hidden_user_id' type='hidden' value="<%= session[:user_id] %>"> 
+    </div>
+  <% else %>
+    <%= form_for @user, url: { action: 'auth_user' } do |f| %>
+      <div><h2>ログイン<h2></div>
+      <div>ユーザー名を入力してください</div>
+      <div><%= f.text_field :user_name %></div>
+      <div><%= f.submit value: "Auth User" %></div>
+    <% end %>
+  <% end %>
+</div>

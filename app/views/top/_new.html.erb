@@ -1,0 +1,13 @@
+<% tweets.each do |f| %>
+  <tr style='border:1px solid black;'>
+    <div><td><%= @users.find(f.tweet_user).user_name %></td></div>
+    <td><%= f.content %></td>
+    <% if session[:user_id] %>
+      <% if fav_list.tweet_id.split(' ').include?("#{f.id}") %>
+        <td><a id='action_fav'><span id='fav-icon' style='color:red' value="<%= f.id %>">❤</span></a></td>
+      <% else %>
+        <td><a id='action_fav'><span id='fav-icon' style='color:gray' value="<%= f.id %>">❤</span></a></td>
+      <% end %>
+    <% end %>
+  <tr>
+<% end %>

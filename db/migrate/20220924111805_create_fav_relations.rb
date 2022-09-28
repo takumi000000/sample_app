@@ -1,0 +1,9 @@
+class CreateFavRelations < ActiveRecord::Migration[5.2]
+  def change
+    create_table :fav_relations do |t|
+      t.integer :user_id
+      t.text :tweet_id
+      t.timestamps
+    end
+  end
+end

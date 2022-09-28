@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>非同期通信サンプルアプリ</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- w2ui 追加 -->
+    <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.5.rc1.min.css" />
+    <!--<script type="text/javascript" src="http://w2ui.com/src/w2ui-1.5.rc1.min.js"></script>-->
+    <!--   ...    -->
+
+    <%= stylesheet_link_tag 'https://fonts.googleapis.com/icon?family=Material+Icons', media: 'all' %> <!-- Material Icons -->
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+  </head>
+  <body>
+    <%= render :template => "auth/edit" %>
+    <%= yield %>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+class Bundle < ApplicationRecord
+end
