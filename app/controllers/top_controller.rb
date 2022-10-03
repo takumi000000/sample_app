@@ -86,7 +86,8 @@ class TopController < ApplicationController
         tweet_user_id: tweet.tweet_user,
         tweet_id: tweet.id,
         fav_list: fav_list.tweet_id,
-        content: tweet.content
+        content: tweet.content,
+        fav_cnt: FavRelation.all.where(tweet_id: tweet.id)
       }
     end
     @tweets_json = {
