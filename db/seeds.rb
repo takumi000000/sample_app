@@ -12,4 +12,4 @@ Tweet.create(tweet_user: 1, content: 'Hello world')
 Tweet.create(tweet_user: 1, content: 'Using Ruby and JavaScript')
 Tweet.create(tweet_user: 1, content: 'これはサンプルアプリです。')
 
-FavRelation.create(user_id: 1, tweet_id: 1)
+FavRelation.create(user_id: 1, tweet_id: "1 2")
